@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MeetAI
+
+A Next.js application built with modern web technologies including Drizzle ORM, PostgreSQL, and Tailwind CSS.
 
 ## Getting Started
 
-First, run the development server:
+### Clone the Repository
+
+```bash
+git clone https://github.com/manku31/meet-ai.git
+cd meet-ai
+```
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Environment Variables
+
+Create a `.env` file in the root directory and add the following variables:
+
+```env
+DATABASE_URL="your_postgresql_database_url_here"
+```
+
+**Required Environment Variables:**
+
+- `DATABASE_URL` - PostgreSQL database connection string (e.g., from Neon, Supabase, or your local PostgreSQL instance)
+
+### Database Setup
+
+Push the database schema to your PostgreSQL database:
+
+```bash
+npm run db:push
+```
+
+To open Drizzle Studio for database management:
+
+```bash
+npm run db:studio
+```
+
+### Development
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev` - Start the development server
+- `npm run build` - Build the application for production
+- `npm run start` - Start the production server
+- `npm run lint` - Run ESLint
+- `npm run db:push` - Push database schema changes
+- `npm run db:studio` - Open Drizzle Studio
 
-## Learn More
+## Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Framework:** Next.js 16
+- **Database:** PostgreSQL with Drizzle ORM
+- **Styling:** Tailwind CSS
+- **UI Components:** Radix UI
+- **TypeScript:** Full type safety
+- **Database Provider:** Neon Database
