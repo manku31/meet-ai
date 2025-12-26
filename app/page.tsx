@@ -6,6 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 
+/**
+ * Render the application's home view with authentication UI and session-aware controls.
+ *
+ * When a session exists, displays the signed-in user's email and a sign-out button.
+ * When no session exists, displays a signup form (name, email, password) and a login form (email, password).
+ *
+ * @returns A React element showing either the signed-in view or the signup/login forms
+ */
 export default function Home() {
   // State variables
   const [name, setName] = useState("");
