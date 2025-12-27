@@ -7,9 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { OctagonAlertIcon } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
+import { FaGoogle, FaGithub } from "react-icons/fa";
 
 // hooks imports
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 // shadcn-ui imports
@@ -25,6 +25,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Alert, AlertTitle } from "@/components/ui/alert";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.email("Invalid email address"),
@@ -51,6 +52,7 @@ export function SignInView() {
       {
         email: data.email,
         password: data.password,
+        callbackURL: "/",
       },
       {
         onSuccess: () => {
@@ -64,6 +66,27 @@ export function SignInView() {
       }
     );
   };
+
+  const onSocial = (provider: "github" | "google") => {
+    setError(null);
+    setPending(true);
+    authClient.signIn.social(
+      {
+        provider: provider,
+        callbackURL: "/",
+      },
+      {
+        onSuccess: () => {
+          setPending(false);
+        },
+        onError: ({ error }) => {
+          setPending(false);
+          setError(error.message);
+        },
+      }
+    );
+  };
+
   return (
     <div className="flex flex-col gap-6">
       <Card className="overflow-hidden p-0">
@@ -126,7 +149,7 @@ export function SignInView() {
                 {/* error display  */}
                 {!!error && (
                   <Alert className="bg-destructive/10 border-none">
-                    <OctagonAlertIcon className="h-4 w-4 !text-destructive" />
+                    <OctagonAlertIcon className="h-4 w-4 text-destructive" />
                     <AlertTitle className="text-sm">{error}</AlertTitle>
                   </Alert>
                 )}
@@ -150,16 +173,18 @@ export function SignInView() {
                     type="button"
                     className="w-full"
                     disabled={pending}
+                    onClick={() => onSocial("google")}
                   >
-                    Google
+                    <FaGoogle />
                   </Button>
                   <Button
                     variant="outline"
                     type="button"
                     className="w-full"
                     disabled={pending}
+                    onClick={() => onSocial("github")}
                   >
-                    Github
+                    <FaGithub />
                   </Button>
                 </div>
 
