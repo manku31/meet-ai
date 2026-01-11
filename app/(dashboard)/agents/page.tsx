@@ -11,8 +11,15 @@ import AgentsView, {
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { SearchParams } from "nuqs";
+import { loadSearchParams } from "@/modules/agents/params";
 
-export default async function Agent() {
+interface Props {
+  serachParams: Promise<SearchParams>;
+}
+
+export default async function Agent({ serachParams }: Props) {
+  const filters = await loadSearchParams(serachParams);
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -22,7 +29,9 @@ export default async function Agent() {
   }
 
   const queryClient = getQueryClient();
-  void queryClient.prefetchQuery(trpc.agents.getMany.queryOptions());
+  void queryClient.prefetchQuery(
+    trpc.agents.getMany.queryOptions({ ...filters })
+  );
 
   return (
     <>
