@@ -40,7 +40,7 @@ export function AgentForm({
   const createAgent = useMutation(
     trpc.agents.create.mutationOptions({
       onSuccess: async () => {
-        queryClient.invalidateQueries(trpc.agents.getMany.queryOptions({}));
+        await queryClient.invalidateQueries(trpc.agents.getMany.queryOptions({}));
         onSuccess?.();
         toast.success("Agent created successfully");
       },
@@ -122,7 +122,7 @@ export function AgentForm({
               <FormControl>
                 <Textarea
                   placeholder="Agent Instructions"
-                  className="min-h-[120px]"
+                  className="min-h-30"
                   {...field}
                   disabled={isPending}
                 />
