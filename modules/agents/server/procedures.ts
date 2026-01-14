@@ -15,6 +15,7 @@ import {
 import { TRPCError } from "@trpc/server";
 
 export const agentsRouter = createTRPCRouter({
+  // Update an agent
   update: protectedProcedure
     .input(agentsUpdateSchema)
     .mutation(async ({ input, ctx }) => {
@@ -32,6 +33,8 @@ export const agentsRouter = createTRPCRouter({
 
       return updateAgent;
     }),
+
+  // Remove an agent
   remove: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ input, ctx }) => {
@@ -48,6 +51,8 @@ export const agentsRouter = createTRPCRouter({
 
       return removeAgent;
     }),
+
+  // Get one agent by ID
   getOne: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input, ctx }) => {
@@ -71,6 +76,7 @@ export const agentsRouter = createTRPCRouter({
       return existingAgent;
     }),
 
+  // Get many agents with pagination and search
   getMany: protectedProcedure
     .input(
       z.object({
@@ -124,6 +130,7 @@ export const agentsRouter = createTRPCRouter({
       return result;
     }),
 
+  // Create a new agent
   create: protectedProcedure
     .input(agentsInsertSchema)
     .mutation(async ({ input, ctx }) => {
