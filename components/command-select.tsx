@@ -11,30 +11,30 @@ import {
 } from "./ui/command";
 
 interface Props {
-  option: Array<{
+  options: Array<{
     id: string;
     value: string;
     children: ReactNode;
   }>;
   onSelect: (value: string) => void;
-  onSearch: (value: string) => void;
+  onSearch?: (value: string) => void;
   value: string;
   placeholder?: string;
   isSearchable?: boolean;
-  calssName?: string;
+  className?: string;
 }
 
 export default function CommandSelect({
-  option,
+  options,
   onSelect,
   onSearch,
   value,
   placeholder = "Select an option...",
   isSearchable = true,
-  calssName = "",
+  className = "",
 }: Props) {
   const [open, setOpen] = useState(false);
-  const selectedOption = option.find((option) => option.value === value);
+  const selectedOption = options.find((option) => option.value === value);
 
   return (
     <>
@@ -45,7 +45,7 @@ export default function CommandSelect({
         className={cn(
           "h-9 justify-between font-normal px-2",
           !selectedOption && "text-muted-foreground",
-          calssName
+          className
         )}
       >
         <div>{selectedOption?.children ?? placeholder}</div>
@@ -63,7 +63,7 @@ export default function CommandSelect({
               No options found.
             </span>
           </CommandEmpty>
-          {option.map((option) => (
+          {options.map((option) => (
             <CommandItem
               key={option.id}
               onSelect={() => {
