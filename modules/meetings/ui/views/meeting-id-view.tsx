@@ -13,6 +13,10 @@ import { useRouter } from "next/navigation";
 import useConfirm from "@/hooks/use-confirm";
 import { UpdateMeetingDialog } from "../components/update-meeting-dialog";
 import { useState } from "react";
+import UpcommingState from "../components/upcoming-state";
+import ActiveState from "../components/active-state";
+import CancelledState from "../components/cancelled-state";
+import ProcessingState from "../components/processing-state";
 
 interface Props {
   meetingId: string;
@@ -26,11 +30,11 @@ export default function MeetingIdView({ meetingId }: Props) {
 
   const [RemoveConfirmation, confirmRemove] = useConfirm(
     "Are you sure",
-    "The following action will remove this meeting"
+    "The following action will remove this meeting",
   );
 
   const { data } = useSuspenseQuery(
-    trpc.meetings.getOne.queryOptions({ id: meetingId })
+    trpc.meetings.getOne.queryOptions({ id: meetingId }),
   );
 
   const removeMeeting = useMutation(
@@ -40,7 +44,7 @@ export default function MeetingIdView({ meetingId }: Props) {
 
         router.push("/meetings");
       },
-    })
+    }),
   );
 
   const handleRemove = async () => {
@@ -49,6 +53,12 @@ export default function MeetingIdView({ meetingId }: Props) {
 
     await removeMeeting.mutateAsync({ id: meetingId });
   };
+
+  const isActive = data.status === "active";
+  const isUpcoming = data.status === "upcoming";
+  const isCancelled = data.status === "cancelled";
+  const isCompleted = data.status === "completed";
+  const isProcessing = data.status === "processing";
 
   return (
     <>
@@ -65,7 +75,17 @@ export default function MeetingIdView({ meetingId }: Props) {
           onEdit={() => setUpdateOpenDialog(true)}
           onRemove={handleRemove}
         />
-        <p>{JSON.stringify(data, null, 2)}</p>
+        {isCancelled &&  <CancelledState />}
+        {isCompleted && <div>This meeting has been completed.</div>}
+        {isProcessing && <ProcessingState />}
+        {isActive && <ActiveState meetingId={meetingId} />}
+        {isUpcoming && (
+          <UpcommingState
+            meetingId={meetingId}
+            onCancelMeeting={() => {}}
+            isCanceling={false}
+          />
+        )}
       </div>
     </>
   );
